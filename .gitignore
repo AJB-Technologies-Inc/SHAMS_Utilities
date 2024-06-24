@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+
+checks.json
+**/build/
