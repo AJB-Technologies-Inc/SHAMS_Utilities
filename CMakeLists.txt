@@ -14,3 +14,6 @@ add_subdirectory(RingBuffer)
 
 # Add the Buffer library
 add_subdirectory(Buffer)
+
+# Add the Dictionary library
+add_subdirectory(Dictionary)
