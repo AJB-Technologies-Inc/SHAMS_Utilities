@@ -5,5 +5,7 @@ project(SHAMS_Utilities)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+include(cmake/install_libs.cmake)
+
 # Add the RingBuffer library
 add_subdirectory(RingBuffer)

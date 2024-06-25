@@ -1,18 +1,18 @@
 
-add_library(RingBuffer STATIC)
+add_library(RingBuffer INTERFACE)
 
 set_target_properties(RingBuffer PROPERTIES
     CXX_STANDARD 23
     CXX_STANDARD_REQUIRED ON
 )
 
-target_sources(RingBuffer PRIVATE
-    src/RingBuffer.cpp
+target_sources(RingBuffer INTERFACE
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/RingBuffer.hpp>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/StaticRingBuffer.hpp>
 )
 
-target_include_directories(RingBuffer PUBLIC
+target_include_directories(RingBuffer INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-    $<INSTALL_INTERFACE:include>
 )
 
 # Install
@@ -25,6 +25,9 @@ install(TARGETS RingBuffer
 
 install(EXPORT ShamsRingBufferTargets
     FILE ShamsRingBufferTargets.cmake
-    NAMESPACE SHAMS::
     DESTINATION lib/cmake/ShamsRingBuffer
 )
+
+# Unit tests
+enable_testing()
+add_subdirectory(test)
