@@ -7,12 +7,12 @@ set_target_properties(RingBuffer PROPERTIES
 )
 
 target_sources(RingBuffer INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/RingBuffer.hpp>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/StaticRingBuffer.hpp>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes/RingBuffer.hpp>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes/StaticRingBuffer.hpp>
 )
 
 target_include_directories(RingBuffer INTERFACE
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes>
 )
 
 # Install
@@ -29,5 +29,4 @@ install(EXPORT ShamsRingBufferTargets
 )
 
 # Unit tests
-enable_testing()
 add_subdirectory(test)

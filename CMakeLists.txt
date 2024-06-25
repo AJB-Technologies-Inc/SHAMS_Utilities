@@ -7,5 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(cmake/install_libs.cmake)
 
+enable_testing()
+
 # Add the RingBuffer library
 add_subdirectory(RingBuffer)
+
+# Add the Buffer library
+add_subdirectory(Buffer)
