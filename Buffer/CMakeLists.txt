@@ -8,6 +8,7 @@ set_target_properties(Buffer PROPERTIES
 
 target_sources(Buffer INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes/Buffer.hpp>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/includes/StaticBuffer.hpp>
 )
 
 target_include_directories(Buffer INTERFACE
