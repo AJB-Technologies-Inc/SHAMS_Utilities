@@ -28,4 +28,6 @@ install(EXPORT ShamsDictionaryTargets
 )
 
 # Unit tests
-add_subdirectory(test)
+if(SHAMS_UTIL_TESTING_ENABLED)
+    add_subdirectory(test)
+endif()
