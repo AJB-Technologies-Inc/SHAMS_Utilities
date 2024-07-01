@@ -7,7 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(cmake/install_libs.cmake)
 
-enable_testing()
+# Only enable testing if this is the main project
+if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
+    enable_testing()
+endif()
 
 # Add the RingBuffer library
 add_subdirectory(RingBuffer)
