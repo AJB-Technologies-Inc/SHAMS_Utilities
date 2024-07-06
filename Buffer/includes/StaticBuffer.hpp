@@ -141,6 +141,14 @@ namespace SHAMS
             m_size = 0;
         }
 
+        // Iterator access
+        auto begin() { return m_buffer.begin(); }
+        auto end() { return m_buffer.begin() + m_size; }
+        auto begin() const { return m_buffer.begin(); }
+        auto end() const { return m_buffer.begin() + m_size; }
+        auto cbegin() const { return m_buffer.cbegin(); }
+        auto cend() const { return m_buffer.cbegin() + m_size; }
+
     private:
         std::array<T, capacity> m_buffer;
         uint32_t m_size = 0;

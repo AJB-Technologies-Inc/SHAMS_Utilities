@@ -30,7 +30,7 @@ namespace SHAMS
          */
         uint32_t size() const
         {
-            return m_buffer.size();
+            return static_cast<uint32_t>(m_buffer.size());
         }
 
         /**
@@ -65,6 +65,14 @@ namespace SHAMS
             }
             return false;
         }
+
+        // Iterator access
+        auto begin() { return m_buffer.begin(); }
+        auto end() { return m_buffer.end(); }
+        auto begin() const { return m_buffer.begin(); }
+        auto end() const { return m_buffer.end(); }
+        auto cbegin() const { return m_buffer.cbegin(); }
+        auto cend() const { return m_buffer.cend(); }
 
     private:
         std::vector<T> m_buffer;
