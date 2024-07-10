@@ -5,8 +5,6 @@ project(SHAMS_Utilities)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-include(cmake/install_libs.cmake)
-
 # Only enable testing if this is the main project
 if(CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR)
     enable_testing()
