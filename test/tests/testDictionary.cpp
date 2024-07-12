@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <Dictionary.hpp>
+#include <ShamsDictionary.hpp>
 
 TEST(Dictionary, Insert)
 {

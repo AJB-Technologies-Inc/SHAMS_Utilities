@@ -1,0 +1,22 @@
+{
+    "name": "Shams_Utilities",
+    "version": "1.0.0",
+    "description": "Library containing utility functions, classes and types for SHAMS",
+    "keywords": "SHAMS",
+    "repository":
+    {
+      "type": "git",
+      "url": "https://github.com/AJB-Technologies-Inc/SHAMS_Utilities.git"
+    },
+    "authors":
+    [
+      {
+        "name": "Aaron Bromma",
+        "email": "aaron@ajb-tech.ca",
+        "url": "https://www.ajb-tech.ca/"
+      }
+    ],
+    "frameworks": "*",
+    "platforms": "*",
+    "headers": ["Types/*.hpp"]
+  }

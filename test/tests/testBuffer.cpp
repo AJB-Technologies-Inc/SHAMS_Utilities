@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Buffer.hpp"
+#include "ShamsBuffer.hpp"
 
 TEST(Buffer, Insert)
 {

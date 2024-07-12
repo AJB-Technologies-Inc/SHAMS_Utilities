@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "RingBuffer.hpp"
+#include "ShamsRingBuffer.hpp"
 
 TEST(RingBufferTests, CanCreateBuffer)
 {
