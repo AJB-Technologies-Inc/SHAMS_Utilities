@@ -19,7 +19,7 @@ add_subdirectory(Types)
 include(FetchContent)
 FetchContent_Declare(
     cmake_modules
-    GIT_REPOSITORY git@github.com:AJB-Technologies-Inc/CmakeModules.git
+    GIT_REPOSITORY https://github.com/AJB-Technologies-Inc/CmakeModules.git
     GIT_TAG main # Optionally, specify a specific tag or commit
 )
 FetchContent_MakeAvailable(cmake_modules)
