@@ -16,5 +16,13 @@ endif()
 # Add the Types library
 add_subdirectory(Types)
 
-include(${CMAKE_SOURCE_DIR}/cmake/modules/InstallAndExportShamsLib.cmake)
+include(FetchContent)
+FetchContent_Declare(
+    cmake_modules
+    GIT_REPOSITORY git@github.com:AJB-Technologies-Inc/CmakeModules.git
+    GIT_TAG main # Optionally, specify a specific tag or commit
+)
+FetchContent_MakeAvailable(cmake_modules)
+
+include(${cmake_modules_SOURCE_DIR}/InstallAndExportShamsLib.cmake)
 install_and_export_shams_lib(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/Types 1.0.0)
