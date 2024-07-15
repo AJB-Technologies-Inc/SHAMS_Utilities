@@ -1,6 +1,6 @@
 
 
-target_sources(ShamsUtilities INTERFACE
+target_sources(${PROJECT_NAME} INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ShamsRingBuffer.hpp>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ShamsStaticRingBuffer.hpp>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ShamsBuffer.hpp>
@@ -8,6 +8,6 @@ target_sources(ShamsUtilities INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/ShamsDictionary.hpp>
 )
 
-target_include_directories(ShamsUtilities INTERFACE
+target_include_directories(${PROJECT_NAME} INTERFACE
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
 )
