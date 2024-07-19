@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <array>
 #include <mutex>
+#include <stdexcept>
 
 namespace SHAMS
 {

@@ -2,6 +2,7 @@
 
 #include <cstdint>
 #include <array>
+#include <stdexcept>
 
 namespace SHAMS
 {
