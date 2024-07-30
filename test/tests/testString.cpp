@@ -54,10 +54,97 @@ TEST(String, modify_string_elements)
 {
     StaticString str("world");
     str[0] = 'h';
-    str[1] = 'e';
-    str[2] = 'l';
-    str[3] = 'l';
-    str[4] = 'o';
+    ASSERT_STREQ(str.c_str(), "horld");
+}
+
+TEST(String, assign_from_new_c_string)
+{
+    StaticString str("world");
+    str = "hello";
     ASSERT_STREQ(str.c_str(), "hello");
 }
 
+TEST(String, assign_from_new_static_string)
+{
+    StaticString<16> str("world");
+    StaticString newStr("hello World");
+    str = newStr;
+    ASSERT_STREQ(newStr.c_str(), "hello World");
+}
+
+
+TEST(String, create_from_copy)
+{
+    StaticString str("Hello");
+    StaticString copy = str;
+    ASSERT_EQ(copy.length(), 5);
+    ASSERT_STREQ(copy.c_str(), "Hello");
+}
+
+TEST(String, create_from_move)
+{
+    StaticString str("Hello");
+    StaticString copy = std::move(str);
+    // Ensure that the copy is correct
+    ASSERT_EQ(copy.length(), 5);
+    ASSERT_STREQ(copy.c_str(), "Hello");
+    // Ensure that the original string is empty
+    ASSERT_EQ(str.length(), 0);
+    ASSERT_STREQ(str.c_str(), "");
+}
+
+TEST(String, to_upper)
+{
+    StaticString str("hello");
+    str.toUpper();
+    ASSERT_STREQ(str.c_str(), "HELLO");
+}
+
+TEST(String, to_upper_on_empty_string)
+{
+    StaticString str("");
+    str.toUpper();
+    ASSERT_STREQ(str.c_str(), "");
+}
+
+TEST(String, to_lower)
+{
+    StaticString str("HELLO");
+    str.toLower();
+    ASSERT_STREQ(str.c_str(), "hello");
+}
+
+TEST(String, to_lower_on_empty_string)
+{
+    StaticString str("");
+    str.toLower();
+    ASSERT_STREQ(str.c_str(), "");
+}
+
+TEST(String, append_char)
+{
+    StaticString<7> str("Hello");
+    str.append('t');
+    ASSERT_STREQ(str.c_str(), "Hellot");
+}
+TEST(String, append_null_char)
+{
+    StaticString<7> str("Hello");
+    str.append('\0');
+    ASSERT_STREQ(str.c_str(), "Hello");
+}
+
+
+TEST(String, append_c_string)
+{
+    StaticString<16> str("Hello");
+    str.append(" World");
+    ASSERT_STREQ(str.c_str(), "Hello World");
+}
+
+TEST(String, append_empty_c_string)
+{
+    StaticString<16> str("Hello");
+    str.append("");
+    ASSERT_STREQ(str.c_str(), "Hello");
+}
