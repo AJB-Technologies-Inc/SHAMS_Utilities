@@ -5,6 +5,7 @@
 #include <stdexcept>
 #include <algorithm>
 #include <ranges>
+#include <string>
 
 namespace SHAMS
 {
@@ -35,6 +36,18 @@ class StaticString
             : m_length(t_maxLength - 1) // Exclude null terminator
     {
         std::copy(str, str + m_length, m_buffer.begin());
+        m_buffer[m_length] = '\0';
+    }
+
+    /**
+     * @brief Constructor that initializes the buffer with the provided string
+     *
+     * @param str - The string to initialize the buffer with
+     */
+    constexpr StaticString(std::string_view str)
+            : m_length(str.length())
+    {
+        std::copy(str.begin(), str.end(), m_buffer.begin());
         m_buffer[m_length] = '\0';
     }
 
@@ -239,6 +252,257 @@ class StaticString
     }
 
     /**
+     * @brief Reverse the string
+     */
+    constexpr void reverse()
+    {
+        std::ranges::reverse(this->begin(), this->end());
+    }
+
+    /**
+     * @brief Remove all instances of a character from the string
+     *
+     * @param c - The character to remove
+     */
+    constexpr void remove(char c)
+    {
+        m_buffer.erase(std::remove(this->begin(), this->end(), c), this->end());
+        m_length = strnlen(this->c_str(), t_maxLength);
+    }
+
+    /**
+     * @brief Remove all instances of a string from the string
+     * 
+     * @param str - The string to remove
+     */
+    constexpr void remove(const char *str)
+    {
+        m_buffer.erase(std::remove(this->begin(), this->end(), str), this->end());
+        m_length = strnlen(this->c_str(), t_maxLength);
+    }
+
+    /**
+     * @brief Count the number of instances of a character in the string
+     *
+     * @param c - The character to count
+     * @return size_t - The number of instances of the character
+     */
+    constexpr size_t count(char c)
+    {
+        return std::ranges::count(this->begin(), this->end(), c);
+    }
+
+    /**
+     * @brief Count the number of instances of a string in the string
+     *
+     * @param str - The string to count
+     * @return size_t - The number of instances of the string
+     */
+    constexpr size_t count(std::string_view str) const
+    {
+        size_t count = 0;
+        auto it = m_buffer.begin();
+        auto str_len = str.length();
+
+        while ((it = std::search(it, m_buffer.end(), str.begin(), str.end())) != m_buffer.end())
+        {
+            ++count;
+            it += str_len; // Move past the last found substring
+        }
+
+        return count;
+    }
+
+    /**
+     * @brief Count the number of instances of a string in the string
+     *
+     * @param str - The string to count
+     * @return size_t - The number of instances of the string
+     */
+    constexpr size_t count(const StaticString &str)
+    {
+        return count(str.c_str());
+    }
+
+
+    /**
+     * @brief Count the number of instances of a string in the string
+     *
+     * @param str - The string to count
+     * @return size_t - The number of instances of the string
+     */
+    constexpr size_t count(const char *str, size_t length)
+    {
+        return std::ranges::count(this->begin(), this->end(), str, str + length);
+    }
+
+    /**
+     * @brief Count the number of instances of a string in the string
+     *
+     * @tparam t_otherLength - The length of the other string
+     * @param str - The string to count
+     * @return size_t - The number of instances of the string
+     */
+    template<size_t t_otherLength>
+    constexpr size_t count(const StaticString<t_otherLength> &str)
+    {
+        return std::ranges::count(this->begin(), this->end(), str.begin(), str.end());
+    }
+
+    /**
+     * @brief Count the number of instances of a string in the string
+     *
+     * @tparam t_otherLength - The length of the other string
+     * @param str - The string to count
+     * @return size_t - The number of instances of the string
+     */
+    template<size_t t_otherLength>
+    constexpr size_t count(const char (&str)[t_otherLength])
+    {
+        return std::ranges::count(this->begin(), this->end(), str, str + t_otherLength);
+    }
+
+
+    /**
+     * @brief Check if the string starts with a given string
+     *
+     * @param str - The string to check
+     * @return bool - True if the string starts with the given string, false otherwise
+     */
+    constexpr bool startsWith(std::string_view str)
+    {
+        return std::ranges::equal(str.begin(), str.end(), this->begin());
+    }
+
+    /**
+     * @brief Check if the string ends with a given string
+     *
+     * @param str - The string to check
+     * @return bool - True if the string ends with the given string, false otherwise
+     */
+    constexpr bool endsWith(std::string_view str)
+    {
+        size_t strLength = str.length();
+        return std::ranges::equal(str.begin(), str.end(), this->end() - strLength);
+    }
+
+    /**
+     * @brief Check if the string contains a given string
+     *
+     * @param str - The string to check
+     * @return bool - True if the string contains the given string, false otherwise
+     */
+    constexpr bool contains(std::string_view str)
+    {
+        return (this->count(str) > 0);
+    }
+
+
+    /**
+     * @brief Check if the string contains a given character
+     *
+     * @param character - The character to check
+     * @return bool - True if the string contains the given character, false otherwise
+     */
+    constexpr bool contains(const char character)
+    {
+        return this->count(character) > 0;
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    constexpr bool compare(const char *str)
+    {
+        return strncmp(str, this->c_str(), t_maxLength) == 0;
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    constexpr bool compare(const StaticString &str)
+    {
+        return strncmp(this->c_str(), str.c_str(), t_maxLength) == 0;
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    constexpr bool compare(const std::string &str)
+    {
+        return str == this->c_str();
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    constexpr bool compare(const char *str, size_t length)
+    {
+        return strncmp(str, this->c_str(), length) == 0;
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    template<size_t t_otherLength>
+    constexpr bool compare(const StaticString<t_otherLength> &str)
+    {
+        auto max_length = std::min(t_maxLength, t_otherLength);
+        return strncmp(this->c_str(), str.c_str(), max_length) == 0;
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    template<size_t t_otherLength>
+    constexpr bool compare(const char (&str)[t_otherLength])
+    {
+        auto max_length = std::min(t_maxLength, t_otherLength);
+        return strncmp(str, this->c_str(), max_length) == 0;
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    constexpr bool operator==(const auto &str)
+    {
+        return this->compare(str);
+    }
+
+    /**
+     * @brief Compare the string with a given string
+     *
+     * @param str - The string to compare
+     * @return bool - True if the strings are equal, false otherwise
+     */
+    constexpr bool operator==(const auto *str)
+    {
+        return this->compare(str);
+    }
+
+
+    /**
      * @brief Append a character to the end of the string
      *
      * @param c - The character to append
@@ -281,6 +545,37 @@ class StaticString
         {
             std::ranges::copy(str, m_buffer.begin() + m_length);
             m_length += str.length();
+            m_buffer[m_length] = '\0';
+        }
+    }
+
+    /**
+     * @brief Append a string to the end of the string
+     *
+     * @param str - Standard C++ string to append
+     */
+    constexpr void append(const std::string &str)
+    {
+        if (m_length + str.length() < t_maxLength)
+        {
+            std::ranges::copy(str, m_buffer.begin() + m_length);
+            m_length += str.length();
+            m_buffer[m_length] = '\0';
+        }
+    }
+
+    /**
+     * @brief Append a string to the end of the string
+     *
+     * @param str - Null-terminated C-style string to append
+     */
+    constexpr void append(const char *str)
+    {
+        size_t strLength = strnlen(str, t_maxLength);
+        if (m_length + strLength < t_maxLength)
+        {
+            std::copy(str, str + strLength, m_buffer.begin() + m_length);
+            m_length += strLength;
             m_buffer[m_length] = '\0';
         }
     }

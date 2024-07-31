@@ -33,6 +33,38 @@ TEST(String, create_default_with_max_length)
     ASSERT_EQ(str.maxLength(), 10);
 }
 
+TEST(String, create_from_std_string)
+{
+    std::string stdStr = "Hello";
+    StaticString str(stdStr);
+    ASSERT_EQ(str.length(), 5);
+    ASSERT_STREQ(str.c_str(), "Hello");
+}
+
+TEST(String, create_from_empty_std_string)
+{
+    std::string stdStr = "";
+    StaticString str(stdStr);
+    ASSERT_EQ(str.length(), 0);
+    ASSERT_STREQ(str.c_str(), "");
+}
+
+TEST(String, create_from_null_terminated_string)
+{
+    const char* cStr = "Hello";
+    StaticString str(cStr);
+    ASSERT_EQ(str.length(), 5);
+    ASSERT_STREQ(str.c_str(), "Hello");
+}
+
+TEST(String, create_from_empty_null_terminated_string)
+{
+    const char* cStr = "";
+    StaticString str(cStr);
+    ASSERT_EQ(str.length(), 0);
+    ASSERT_STREQ(str.c_str(), "");
+}
+
 
 TEST(String, access_elements)
 {
@@ -126,12 +158,14 @@ TEST(String, append_char)
     StaticString<7> str("Hello");
     str.append('t');
     ASSERT_STREQ(str.c_str(), "Hellot");
+    ASSERT_EQ(str.length(), 6);
 }
 TEST(String, append_null_char)
 {
     StaticString<7> str("Hello");
     str.append('\0');
     ASSERT_STREQ(str.c_str(), "Hello");
+    ASSERT_EQ(str.length(), 5);
 }
 
 
@@ -140,6 +174,7 @@ TEST(String, append_c_string)
     StaticString<16> str("Hello");
     str.append(" World");
     ASSERT_STREQ(str.c_str(), "Hello World");
+    ASSERT_EQ(str.length(), 11);
 }
 
 TEST(String, append_empty_c_string)
@@ -147,4 +182,138 @@ TEST(String, append_empty_c_string)
     StaticString<16> str("Hello");
     str.append("");
     ASSERT_STREQ(str.c_str(), "Hello");
+    ASSERT_EQ(str.length(), 5);
+}
+
+TEST(String, append_static_string)
+{
+    StaticString<16> str("Hello");
+    StaticString newStr(" World");
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello World");
+    ASSERT_EQ(str.length(), 11);
+}
+
+TEST(String, append_empty_static_string)
+{
+    StaticString<16> str("Hello");
+    StaticString newStr("");
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello");
+    ASSERT_EQ(str.length(), 5);
+}
+
+TEST(String, append_static_string_with_max_length)
+{
+    StaticString<16> str("Hello");
+    StaticString<16> newStr(" World");
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello World");
+    ASSERT_EQ(str.length(), 11);
+}
+
+
+TEST(String, append_std_string)
+{
+    StaticString<16> str("Hello");
+    std::string newStr(" World");
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello World");
+    ASSERT_EQ(str.length(), 11);
+}
+
+TEST(String, append_empty_std_string)
+{
+    StaticString<16> str("Hello");
+    std::string newStr("");
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello");
+    ASSERT_EQ(str.length(), 5);
+}
+
+TEST(String, append_null_terminated_string)
+{
+    StaticString<16> str("Hello");
+    const char* newStr = " World";
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello World");
+    ASSERT_EQ(str.length(), 11);
+}
+
+TEST(String, append_empty_null_terminated_string)
+{
+    StaticString<16> str("Hello");
+    const char* newStr = "";
+    str.append(newStr);
+    ASSERT_STREQ(str.c_str(), "Hello");
+    ASSERT_EQ(str.length(), 5);
+}
+
+TEST(String, compare_static_strings)
+{
+    StaticString str("Hello");
+    StaticString copy = "Hello";
+    ASSERT_TRUE(str == copy);
+    ASSERT_FALSE(str != copy);
+}
+
+TEST(String, compare_static_strings_with_different_lengths)
+{
+    StaticString str1 = "Hello";
+    StaticString<10> str2 = "Hello";
+    StaticString<20> str3 = "Hello World";
+    ASSERT_TRUE(str1 == str2);
+    ASSERT_FALSE(str1 == str3);
+}
+
+TEST(String, compare_with_c_string)
+{
+    StaticString str("Hello");
+    ASSERT_TRUE(str == "Hello");
+}
+
+TEST(String, compare_with_empty_c_string)
+{
+    StaticString str("Hello");
+    ASSERT_FALSE(str == "");
+}
+
+TEST(String, compare_with_std_string)
+{
+    StaticString str("Hello");
+    ASSERT_TRUE(str == std::string("Hello"));
+}
+
+TEST(String, compare_with_empty_std_string)
+{
+    StaticString str("Hello");
+    ASSERT_FALSE(str == std::string(""));
+}
+
+TEST(String, compare_with_null_terminated_string)
+{
+    StaticString str("Hello");
+    ASSERT_TRUE(str == "Hello");
+}
+
+TEST(String, compare_with_empty_null_terminated_string)
+{
+    StaticString str("Hello");
+    ASSERT_FALSE(str == "");
+}
+
+
+TEST(String, contains_substring)
+{
+    StaticString str("Hello World");
+    StaticString str2("World");
+    std::string str3("World");
+    char str4[] = "World";
+    ASSERT_TRUE(str.contains("World"));
+    ASSERT_FALSE(str.contains("world"));
+    ASSERT_TRUE(str.contains('W'));
+    ASSERT_FALSE(str.contains('w'));
+    // ASSERT_TRUE(str.contains(str2));
+    // ASSERT_TRUE(str.contains(str3));
+    ASSERT_TRUE(str.contains(str4));
 }
